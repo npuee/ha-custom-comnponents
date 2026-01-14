@@ -83,3 +83,4 @@ docker-compose.override.yml
 # Generated frontend assets
 custom_components/*/hacs_frontend/frontend_latest/
 custom_components/*/hacs_frontend/frontend_es5/
+copilot-instructions.md
