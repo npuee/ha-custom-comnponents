@@ -41,7 +41,7 @@ Installation
 
 Behavior
 
-- The integration requires a `contract_number` when adding the integration.
+- The integration requires a `contract_number` when adding the integration input but without leading L.
 - On setup it fetches the API endpoint: `https://cms.keskkonnateenused.ee/wp-json/general-purpose-api/upcoming-discharges?contractNumber=<contract>`.
 - The setup will attempt to extract the address from the API and ask you to confirm it; the confirmed `address` is saved to the config entry and used as the device name/identifier for created sensors.
 - One sensor per garbage type is created. Sensor names use the format: `{garbage} pickup` (for example: `Glass pickup`).
