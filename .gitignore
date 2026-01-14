@@ -75,6 +75,7 @@ scripts/
 # Test files to ignore
 docker-compose.yml
 requirement.txt
+copilot-instructions.md
 
 # Docker
 docker-compose.override.yml
