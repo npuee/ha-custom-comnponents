@@ -1,0 +1,6 @@
+{
+  "#": "Map company ids to names. Fill this out with real mappings.",
+  "mappings": {
+    "1": "Example Company"
+  }
+}
