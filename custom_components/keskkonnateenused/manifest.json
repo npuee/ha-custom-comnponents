@@ -2,7 +2,7 @@
   "domain": "keskkonnateenused",
   "name": "Keskkonnateenused",
   "version": "1.0.0",
-  "documentation": "https://github.com/",
+  "documentation": "https://github.com/npuee/ha-custom-comnponents",
   "requirements": [],
   "codeowners": [],
   "config_flow": true,
