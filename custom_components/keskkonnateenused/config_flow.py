@@ -62,7 +62,7 @@ class KeskkonnateenusedFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
             data = {"contract_number": contract}
             options = {"update_interval": user_input.get("update_interval", UPDATE_INTERVAL)}
-            return self.async_create_entry(title=f"Keskkonnateenused {contract}", data=data, options=options)
+            return self.async_create_entry(title="Keskonnateenused", data=data, options=options)
 
         # show initial user form when no input provided
         schema = vol.Schema(
@@ -80,7 +80,7 @@ class KeskkonnateenusedFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             data = {"contract_number": str(user_input.get("contract_number")), "address": str(user_input.get("address"))}
             options = {"update_interval": user_input.get("update_interval", UPDATE_INTERVAL)}
-            return self.async_create_entry(title=f"Keskkonnateenused {data['address']}", data=data, options=options)
+            return self.async_create_entry(title="Keskonnateenused", data=data, options=options)
 
         # Shouldn't reach here; show empty form defensively
         schema = vol.Schema(
