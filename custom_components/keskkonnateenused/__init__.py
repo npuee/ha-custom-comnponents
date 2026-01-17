@@ -14,6 +14,17 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup(hass: HomeAssistant, config: dict):
     hass.data.setdefault(DOMAIN, {})
+
+    # Register a lightweight admin service to force a coordinator refresh
+    async def _handle_force_refresh(call):
+        entries = list(hass.data.get(DOMAIN, {}).values())
+        for entry in entries:
+            coordinator = entry.get("coordinator")
+            if coordinator is not None:
+                hass.async_create_task(coordinator.async_refresh())
+
+    hass.services.async_register(DOMAIN, "force_refresh", _handle_force_refresh)
+
     return True
 
 
@@ -70,10 +81,24 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.data[DOMAIN][entry.entry_id] = {"coordinator": coordinator}
 
+    # Schedule a background first refresh so data is fetched without blocking startup.
     try:
         hass.async_create_task(coordinator.async_config_entry_first_refresh())
     except Exception:
         _LOGGER.exception("Failed scheduling initial refresh for %s", entry.entry_id)
+
+    # Wait briefly for the initial data to appear (so sensors can be created with data),
+    # but don't block startup for too long. Poll coordinator.data up to 30 seconds.
+    try:
+        import asyncio
+
+        wait_secs = 30
+        for _ in range(wait_secs):
+            if coordinator.data:
+                break
+            await asyncio.sleep(1)
+    except Exception:
+        _LOGGER.exception("Waiting for initial data failed for %s", entry.entry_id)
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True

@@ -1,0 +1,3 @@
+force_refresh:
+  description: "Force refresh of keskkonnateenused coordinators. Triggers coordinator.async_refresh() for each entry."
+  fields: {}

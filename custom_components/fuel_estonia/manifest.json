@@ -1,8 +1,8 @@
 {
   "domain": "fuel_estonia",
-  "name": "Fuel Estonia",
+  "name": "Fuel Prices Estonia",
   "version": "0.0.1",
-  "documentation": "https://example.org",
+  "documentation": "https://github.com/npuee/ha-custom-comnponents",
   "requirements": [],
   "dependencies": [],
   "config_flow": true,
