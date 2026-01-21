@@ -47,3 +47,35 @@ Behavior
 - One sensor per garbage type is created. Sensor names use the format: `{garbage} pickup` (for example: `Glass pickup`).
 - Each sensor's state is the number of days until the next pickup for that garbage type.
 - Default update interval: once per hour. Change via the integration options.
+
+
+## Uniview camera integration
+
+This repository also includes a minimal Uniview camera custom integration under `custom_components/uniview_camera`.
+
+Installation
+
+1. Copy `custom_components/uniview_camera` into your Home Assistant `custom_components` directory.
+2. Restart Home Assistant.
+3. Add the integration via Settings → Devices & Services → Add Integration → search `Uniview`.
+
+What it does
+
+- Prompts for `host` (IP), `username` and `password` during setup.
+- The integration queries `http://<host>/LAPI/V1.0/Smart/Capabilities` to discover smart features.
+- If multiple capabilities are present, the flow asks you to select exactly one to expose.
+- Creates one or more entities for that capability:
+	- Binary sensor (device class `safety` for common security features). The entity name is the capability (e.g. `IntrusionDetection`).
+	- Optional switch to enable/disable the capability via `http://<host>/LAPI/V1.0/Smart/<Capability>/Rule`.
+- Device registry: registered as manufacturer `Uniview`, `model` from `DeviceModel`, `sw_version` from `FirmwareVersion`, and preferred display name `Uniview - <SerialNumber>` when available.
+
+Authentication and networking
+
+- The device uses HTTP Digest authentication. The integration performs Digest calls using `requests` inside an executor to avoid blocking the Home Assistant event loop.
+- If the integration cannot parse JSON it will attempt XML fallbacks for capability discovery.
+
+Notes
+
+- Video/streaming was intentionally removed from this integration (no camera/stream platform).
+- Binary sensor `status` attribute reflects the camera capability ("unsafe" when the capability is enabled). The binary sensor state is inverted by design (enabled capability -> sensor OFF) to fit the user's preference.
+ - Binary sensor `status` attribute reflects the camera capability: `Enabled == 1` maps to "unsafe" and `Enabled == 0` maps to "safe". This follows the Home Assistant binary sensor convention for safety-type sensors.
